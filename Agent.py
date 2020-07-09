@@ -6,9 +6,9 @@ class Agent:
     Symbol_Threshold = 0; 
     Labda = 0; #max num of clusters
     ClusteringParams_ID = 0; #list of clusters' pattern IDs
+    ClusteringParams_values = 0; #list of clusters' pattern values
     MetricParams = 0;
     Representatives = 0; #list of clusters' medoids
-    
     def __init__(self,name,nome_colonna,theta, Q,dissimilarityFunction):
         self.Symbol_Threshold = theta;
         self.Labda = Q; #__verifica__
@@ -16,7 +16,7 @@ class Agent:
         data_frame = e.Extract(name)
         colonna = data_frame[nome_colonna].tolist()
         g = Granulator(theta, Q); #dichiaro oggetto di tipo Granulator
-        self.ClusteringParams_ID, self.Representatives = g.Process(colonna, theta, Q,dissimilarityFunction)
+        self.ClusteringParams_ID, self.Representatives, self.ClusteringParams_values = g.Process(colonna, theta, Q,dissimilarityFunction)
         
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold

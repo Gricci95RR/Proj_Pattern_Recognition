@@ -10,10 +10,14 @@ m1 = Metric()
 g1 = Granule()
 x1 = Agent('iris_data.txt',"sepal width",0.1,4,m1.Diss)
 x2 = Agent('iris_data.txt',"petal length",0.7,4,m1.Diss)
-print("ClusteringParams_ID:") 
+
+print("ClusteringParams_ID:") #Stampo ID dei granuli
 print(x1.ClusteringParams_ID)
 
-g1.set_Representative(x1.Representatives[0])
+print("ClusteringParams values:") #Stampo valori dei granuli
+print(x1.ClusteringParams_values)
+
+g1.set_Representative(x1.Representatives[0]) #Set del valore Representative della classe Granulo
 print("Representative_Granulo_0:")
 print(g1.Representative)
 

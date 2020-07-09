@@ -39,6 +39,7 @@ class Granulator:
 
         # First Round
         clusters = [[0]]                    # first pattern
+        clusters_v = [[0]]
         representatives = [dataset[0]]      # is
         representatives_IDs = [0]           # first cluster
         isAssigned[0] = True                #
@@ -46,7 +47,6 @@ class Granulator:
         for i in range(1, len(dataset)):
             # grab current point
             point = dataset[i]
-
             # find distances w.r.t. all clusters
             distances = [dissimilarityFunction(point, medoid) for medoid in representatives]
             index_cluster = numpy.argmin(distances)
@@ -55,6 +55,7 @@ class Granulator:
             if distance > theta and len(clusters) < Q:
                 representatives.append(point)
                 clusters.append([i])
+                clusters_v.append([i])
                 representatives_IDs.append(i)
                 isAssigned[i] = True
             else:
@@ -73,7 +74,7 @@ class Granulator:
                 # update medoid
                 if len(clusters[index_cluster]) < poolSize:
                     clusters[index_cluster].append(i)
-
+                    clusters_v[index_cluster].append(point)
                     D = numpy.zeros((len(clusters[index_cluster]), len(clusters[index_cluster])))
                     D[:-1, :-1] = clusters_DissimMatrix[index_cluster]
 
@@ -131,13 +132,5 @@ class Granulator:
                 representatives[index_cluster] = dataset[clusters[index_cluster][minSOD_ID]]
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
         
-        #print("clusters:")
-        #print(clusters)
-        #print("representatives:")
-        #print(representatives)
-        #print("representatives_IDs")
-        #print(representatives_IDs)
-        #print("clusters_DissimMatrix")
-        #print(clusters_DissimMatrix)
         
-        return clusters, representatives#, representatives_IDs, clusters_DissimMatrix
+        return clusters, representatives, clusters_v#, representatives_IDs, clusters_DissimMatrix
