@@ -6,6 +6,17 @@ from scipy.sparse import coo_matrix, dok_matrix
 class Granulator:
     Symbol_Threshold = 0;
     Lambda = 0;
+    def __init__(self, S_T, L):
+        self.Symbol_Threshold = S_T;
+        self.Lambda = L;
+    def get_Symbol_Threshold(self):
+        return self.Symbol_Threshold
+    def get_Symbol_Lambda(self):
+        return self.Lambda
+    def set_Symbol_Threshold(self,S_T):
+        self.Symbol_Threshold = S_T
+    def set_Symbol_Lambda(self, L):
+        self.Lambda = L
     def Process(self,dataset, theta, Q, dissimilarityFunction): #SpareBSAS
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
 
@@ -19,6 +30,7 @@ class Granulator:
         - representatives: list of clusters' medoids
         - representatives_IDs: list of clusters' medoid IDs
         - clusters_DissimMatrix: list of clusters' dissimilarity matrices. """
+        self.Symbol_Threshold = theta
         # Set useful parameters
         poolSize = 20
 

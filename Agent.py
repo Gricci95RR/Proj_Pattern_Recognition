@@ -16,12 +16,19 @@ class Agent:
         colonna = data_frame[nome_colonna].tolist()
         g = Granulator(); #dichiaro oggetto di tipo Granulator
         self.ClusteringParams, self.Representatives = g.Process(colonna, theta, Q,dissimilarityFunction)
-        
-    def Extract(self, name):
-        e = Extractor(); #dichiaro oggetto di tipo Extractor
-        data_frame = e.Extract('iris_data.txt')
-        return data_frame
-    def Granulate(self, dataset, theta, Q, dissimilarityFunction):
-        g = Granulator(); #dichiaro oggetto di tipo Granulator
-        g.Process(dataset, theta, Q,dissimilarityFunction)
+    def get_Symbol_Threshold(self):
+        return self.Symbol_Threshold
+    def get_Labda(self):
+        return self.Labda
+    def get_ClusteringParams(self):
+        return self.ClusteringParams
+    def get_MetricParams(self):
+        return self.MetricParams
+    #def Extract(self, name):
+    #    e = Extractor(); #dichiaro oggetto di tipo Extractor
+    #    data_frame = e.Extract('iris_data.txt')
+    #    return data_frame
+    #def Granulate(self, dataset, theta, Q, dissimilarityFunction):
+    #    g = Granulator(); #dichiaro oggetto di tipo Granulator
+    #    g.Process(dataset, theta, Q,dissimilarityFunction)
 
