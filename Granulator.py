@@ -11,11 +11,11 @@ class Granulator:
         self.Lambda = L;
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold
-    def get_Symbol_Lambda(self):
+    def get_Lambda(self):
         return self.Lambda
     def set_Symbol_Threshold(self,S_T):
         self.Symbol_Threshold = S_T
-    def set_Symbol_Lambda(self, L):
+    def set_Lambda(self, L):
         self.Lambda = L
     def Process(self,dataset, theta, Q, dissimilarityFunction): #SpareBSAS
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library

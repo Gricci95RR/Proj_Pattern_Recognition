@@ -14,7 +14,7 @@ class Agent:
         e = Extractor(); #dichiaro oggetto di tipo Extractor
         data_frame = e.Extract(name)
         colonna = data_frame[nome_colonna].tolist()
-        g = Granulator(); #dichiaro oggetto di tipo Granulator
+        g = Granulator(theta, Q); #dichiaro oggetto di tipo Granulator
         self.ClusteringParams, self.Representatives = g.Process(colonna, theta, Q,dissimilarityFunction)
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold
