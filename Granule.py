@@ -5,5 +5,6 @@ class Granule:
     Quality = 0;
     Representative = 0;
     Metric = 0;
+    
 
 

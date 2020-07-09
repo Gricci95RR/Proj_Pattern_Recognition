@@ -119,13 +119,13 @@ class Granulator:
                 representatives[index_cluster] = dataset[clusters[index_cluster][minSOD_ID]]
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
         
-        print("clusters:")
-        print(clusters)
-        print("representatives:")
-        print(representatives)
-        print("representatives_IDs")
-        print(representatives_IDs)
-        print("clusters_DissimMatrix")
-        print(clusters_DissimMatrix)
+        #print("clusters:")
+        #print(clusters)
+        #print("representatives:")
+        #print(representatives)
+        #print("representatives_IDs")
+        #print(representatives_IDs)
+        #print("clusters_DissimMatrix")
+        #print(clusters_DissimMatrix)
         
-        return clusters, representatives, representatives_IDs, clusters_DissimMatrix
+        return clusters, representatives#, representatives_IDs, clusters_DissimMatrix
