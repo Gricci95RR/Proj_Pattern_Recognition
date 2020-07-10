@@ -24,9 +24,4 @@ print(g1.Representative)
 print("Representatives:")
 print(x1.Representatives)
 
-#plt.scatter(x1.ClusteringParams[0],x1.ClusteringParams[1],alpha=0.5, cmap='brg')
-#plt.title('Scatter plot')
-#plt.xlabel('x')
-#plt.ylabel('y')
-#plt.show()
 

@@ -27,6 +27,7 @@ class Granulator:
         - dissimilarityFunction: callable for the dissimilarity measure to be used
         Output:
         - clusters: list of clusters' pattern IDs
+        - clusters_v: list of clusters' pattern values
         - representatives: list of clusters' medoids
         - representatives_IDs: list of clusters' medoid IDs
         - clusters_DissimMatrix: list of clusters' dissimilarity matrices. """
