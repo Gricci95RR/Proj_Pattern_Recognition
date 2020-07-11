@@ -3,7 +3,6 @@ from Granulator import Granulator
 from Agent import Agent
 from Metric import Metric
 from Granule import Granule
-import matplotlib.pyplot as plt
 
 metric1 = Metric()
 granule1 = Granule()
