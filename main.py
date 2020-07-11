@@ -14,3 +14,4 @@ granulator1 = Granulator()
 agent1 = Agent(0.3,4)
 
 agent1.Granulate(granulator1,dati,agent1.get_Lambda(),agent1.get_Symbol_Threshold(),granule1)
+

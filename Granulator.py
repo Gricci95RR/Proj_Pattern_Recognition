@@ -10,6 +10,7 @@ class Granulator:
     def set_Lambda(self, L):
         self.Lambda = L
     def Process(self,sample,max_clusters, threshold,granule): #SpareBSAS
+        cardinalita = [];
         bsas_instance = bsas(sample, max_clusters, threshold)
         bsas_instance.process()
         # Get clustering results.
@@ -17,6 +18,12 @@ class Granulator:
         representatives = bsas_instance.get_representatives()
         granule.set_Representative(representatives)
         bsas_visualizer.show_clusters(sample, clusters, representatives)
+        
+        for i in range(0,len(clusters)):
+            cardinalita.append(len(clusters[i]))
+            
+        print('cardinalità:')  
+        print(cardinalita)
         print('clusters:')
         print(clusters)
         print('representatives:')
