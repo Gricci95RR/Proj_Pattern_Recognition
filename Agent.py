@@ -3,21 +3,16 @@ from Extractor import Extractor
 from Granule import Granule
 
 class Agent:
-    Symbol_Threshold = 0; 
-    Labda = 0; #max num of clusters
-    ClusteringParams_ID = 0; #list of clusters' pattern IDs
-    ClusteringParams_values = 0; #list of clusters' pattern values
-    MetricParams = 0;
-    Representatives = 0; #list of clusters' medoids
-    def __init__(self,name,nome_colonna,theta, Q,dissimilarityFunction):
+    #Symbol_Threshold 
+    #Labda max num of clusters
+    
+    def __init__(self,theta, Q):
         self.Symbol_Threshold = theta;
-        self.Labda = Q; #__verifica__
-        e = Extractor(); #dichiaro oggetto di tipo Extractor
-        data_frame = e.Extract(name)
-        colonna = data_frame[nome_colonna].tolist()
-        g = Granulator(theta, Q); #dichiaro oggetto di tipo Granulator
-        self.ClusteringParams_ID, self.Representatives, self.ClusteringParams_values = g.Process(colonna, theta, Q,dissimilarityFunction)
+        self.Labda = Q; 
         
+    def Granulate(self, obj_granulator,sample,max_clusters, threshold, granule):
+        obj_granulator.Process(sample, max_clusters, threshold, granule)
+              
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold
     
@@ -30,11 +25,4 @@ class Agent:
     def get_MetricParams(self):
         return self.MetricParams
     
-    #def Extract(self, name):
-    #    e = Extractor(); #dichiaro oggetto di tipo Extractor
-    #    data_frame = e.Extract('iris_data.txt')
-    #    return data_frame
-    #def Granulate(self, dataset, theta, Q, dissimilarityFunction):
-    #    g = Granulator(); #dichiaro oggetto di tipo Granulator
-    #    g.Process(dataset, theta, Q,dissimilarityFunction)
 
