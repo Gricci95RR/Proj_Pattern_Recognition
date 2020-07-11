@@ -1,5 +1,4 @@
 from pyclustering.cluster.bsas import bsas, bsas_visualizer
-from pyclustering.utils import read_sample
 
 class Granulator:
     def get_Symbol_Threshold(self):
