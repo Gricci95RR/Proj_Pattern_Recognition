@@ -1,6 +1,6 @@
 from pyclustering.cluster.bsas import bsas, bsas_visualizer
 from Granule import Granule
-
+from scipy.spatial import distance
 class Granulator:
     lista_di_granuli = [];
     def get_Symbol_Threshold(self):
@@ -15,10 +15,10 @@ class Granulator:
         self.Lambda = L
         self.Symbol_Threshold = S_T
         
-    def Process(self,sample):
+    def Process(self,sample,diss):
         cardinalita = [];
         self.sample = sample;
-        bsas_instance = bsas(self.sample, self.Lambda, self.Symbol_Threshold)
+        bsas_instance = bsas(self.sample, self.Lambda, self.Symbol_Threshold,diss)
         bsas_instance.process()
         # Get clustering results.
         clusters = bsas_instance.get_clusters()
