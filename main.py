@@ -11,7 +11,7 @@ extractor1 = Extractor()
 
 agent1 = Agent(Granulator,extractor1,metric1)
 
-agent1.execute(0.3,5)
+agent1.execute(0.1,5)
 
 metric2 = Metric()
 metric2 = Metric()
