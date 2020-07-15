@@ -4,6 +4,7 @@ import numpy
 import itertools
 import random
 import matplotlib.pyplot as plt
+from statistics import mean
 
 class Granulator:
     lista_di_granuli = [];
@@ -207,20 +208,40 @@ class Granulator:
         
         for i in range(0,len(representatives)):
             somma = 0
-            compattezza.append([])
             end = len(distanze[i])-1
             for j in range(0,len(distanze[i])):
                 somma = somma + distanze[i][j] # Somma di tutte le distanze di un cluster
                 if j == end:
-                    compattezza[i].append(somma)
-        
+                    compattezza.append(somma)
         # Set di compattezza
         granulo.set_Compactness(compattezza)
         
-        print("distances")
+        # Calcolo Effective Radius
+        effective_Radius = []
+        for i in range(0, len(cardinalita)):
+            avg = mean(distanze[i])
+            effective_Radius.append(avg)    
+        # Set Effective Radius
+        granulo.set_Compactness(effective_Radius)
+        
+        # Calcolo Quality (valor medio di compattezza e cardinalità)
+        quality = []
+        for i in range(0, len(cardinalita)):
+            avg2 = (compattezza[i]+cardinalita[i])/2 
+            quality.append(avg2)
+        # Set Quality
+        granulo.set_Quality(quality)
+        
+        print("Cardinalità")
+        print(cardinalita)
+        print("Distances")
         print(distanze)
         print("Compattezze")
         print(compattezza)
+        print("Raggio")
+        print(effective_Radius)
+        print("Quality")
+        print(quality)
         
         # Inserimento in lista oggetto granulo
         self.lista_di_granuli.append(granulo)
