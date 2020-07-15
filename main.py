@@ -6,12 +6,7 @@ extractor1 = Extractor()
 
 agent1 = Agent(Granulator,extractor1)
 
-agent1.execute(0.1,5)
+agent1.execute(0.1,2)
 
 
 
-extractor2 = Extractor()
-
-agent2 = Agent(Granulator,extractor1)
-
-agent1.execute(0.3,5)

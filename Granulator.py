@@ -73,6 +73,7 @@ class Granulator:
     
         # Second Round
         clusters_DissimMatrix = [numpy.zeros((1, 1))] * len(clusters)
+        
         for i in range(0, len(dataset)):
             if isAssigned[i] is False:
                 # grab current point
@@ -156,8 +157,7 @@ class Granulator:
         # Set Params oggetto granulo
         granulo.set_Representative(representatives)
         granulo.set_Cardinality(cardinalita)
-        # Inserimento in lista oggetto granulo
-        self.lista_di_granuli.append(granulo)
+        
         
         # divido clusters values e representatives in due vettori e divido lista clusters_v e representatives in nested list
         x = []
@@ -193,8 +193,37 @@ class Granulator:
         for i in range(0,len(cardinalita)):
             plt.scatter(x[i], y[i], s = 100)
             plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')
-            
-         
+        
+        # Calcolo distanze dei punti dei clusters dai loro rappresentanti
+        distanze = []
+        for i in range(0,len(representatives)):
+            distanze.append([])
+            for j in range(1,len(clusters_v[i])):
+                distanza = self.obj_metric.Diss(clusters_v[i][j],representatives[i])
+                distanze[i].append(distanza)
+                
+        # Calcolo compattezza
+        compattezza = []
+        
+        for i in range(0,len(representatives)):
+            somma = 0
+            compattezza.append([])
+            end = len(distanze[i])-1
+            for j in range(0,len(distanze[i])):
+                somma = somma + distanze[i][j] # Somma di tutte le distanze di un cluster
+                if j == end:
+                    compattezza[i].append(somma)
+        
+        # Set di compattezza
+        granulo.set_Compactness(compattezza)
+        
+        print("distances")
+        print(distanze)
+        print("Compattezze")
+        print(compattezza)
+        
+        # Inserimento in lista oggetto granulo
+        self.lista_di_granuli.append(granulo)
         return clusters, representatives, clusters_v, cardinalita, x, y, x_r, y_r  # , representatives_IDs, clusters_DissimMatrix 
    
     def Process1(self,sample,diss):
