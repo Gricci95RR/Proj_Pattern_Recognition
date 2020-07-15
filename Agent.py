@@ -1,11 +1,11 @@
+from Metric import Metric
 class Agent:
     #Symbol_Threshold 
     #Labda max num of clusters
       
-    def __init__(self,Granulator,external_extractor,external_metric):
-        self.AgentGranulator=Granulator()
-        self.AgentExtractor= external_extractor
-        self.AgentMetric = external_metric
+    def __init__(self,Granulator,external_extractor):
+        self.AgentGranulator = Granulator()
+        self.AgentExtractor = external_extractor
         self.Symbol_Threshold = 0;
         self.Lambda = 0; 
         
@@ -13,8 +13,8 @@ class Agent:
         self.Symbol_Threshold = theta;
         self.Lambda = Q; 
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator.Setup(self.Lambda, self.Symbol_Threshold)
-        self.AgentGranulator.Process(sample, self.AgentMetric.Diss)
+        self.AgentGranulator.Setup(self.Lambda, self.Symbol_Threshold, Metric)
+        self.AgentGranulator.Process(sample)
         
                 
     def get_Symbol_Threshold(self):

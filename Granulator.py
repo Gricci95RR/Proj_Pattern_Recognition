@@ -15,11 +15,13 @@ class Granulator:
         self.Symbol_Threshold = S_T
     def set_Lambda(self, L):
         self.Lambda = L
-    def Setup(self,L,S_T):
+    def Setup(self,L,S_T,Metric):
         self.Lambda = L
         self.Symbol_Threshold = S_T
+        self.Metric_Class = Metric # Classe Metric in metodo Setup
+        self.obj_metric = Metric(0) # Oggetto di classe Metric in metodo Setup
     
-    def Process(self, dataset, dissimilarityFunction):  # SpareBSAS
+    def Process(self, dataset):  # SpareBSAS
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
     
         Input:
@@ -34,7 +36,9 @@ class Granulator:
         - representatives_IDs: list of clusters' medoid IDs
         - clusters_DissimMatrix: list of clusters' dissimilarity matrices 
         - x: x coordinates of points of the clusters
-        - y: y coordinates of points of the clusters."""
+        - y: y coordinates of points of the clusters.
+        - x_r: x coordinates of points of the clusters' representatives
+        - y_r: y coordinates of points of the clusters' representatives."""
         Q = self.Lambda;
         theta = self.Symbol_Threshold;
         # Set useful parameters
@@ -54,7 +58,7 @@ class Granulator:
             # grab current point
             point = dataset[i]
             # find distances w.r.t. all clusters
-            distances = [dissimilarityFunction(point, medoid) for medoid in representatives]
+            distances = [self.obj_metric.Diss(point, medoid) for medoid in representatives]
             index_cluster = numpy.argmin(distances)
             distance = distances[index_cluster]
     
@@ -74,7 +78,7 @@ class Granulator:
                 # grab current point
                 point = dataset[i]
                 # find distances w.r.t. all clusters
-                distances = [dissimilarityFunction(point, medoid) for medoid in representatives]
+                distances = [self.obj_metric.Diss(point, medoid) for medoid in representatives]
                 index_cluster = numpy.argmin(distances)
                 distance = distances[index_cluster]
                 # update medoid
@@ -87,10 +91,10 @@ class Granulator:
                     v_left, v_right = [], []
                     for j, k in itertools.product([D.shape[1] - 1], range(D.shape[0] - 1)):
                         v_left.append(
-                            dissimilarityFunction(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                            self.obj_metric.Diss(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
                     for j, k in itertools.product(range(D.shape[1] - 1), [D.shape[0] - 1]):
                         v_right.append(
-                            dissimilarityFunction(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                            self.obj_metric.Diss(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
                     v = 0.5 * (numpy.array(v_left) + numpy.array(v_right))
                     D[0:-1, -1] = v
                     D[-1, 0:-1] = v
@@ -130,9 +134,9 @@ class Granulator:
                     clusters[index_cluster][toBeChanged] = i
                     v_left, v_right = numpy.zeros(len(clusters[index_cluster])), numpy.zeros(len(clusters[index_cluster]))
                     for j in numpy.setdiff1d(range(len(clusters[index_cluster])), toBeChanged):
-                        v_right[j] = dissimilarityFunction(dataset[clusters[index_cluster][j]],
+                        v_right[j] = self.obj_metric.Diss(dataset[clusters[index_cluster][j]],
                                                            dataset[clusters[index_cluster][toBeChanged]])
-                        v_left[j] = dissimilarityFunction(dataset[clusters[index_cluster][toBeChanged]],
+                        v_left[j] = self.obj_metric.Diss(dataset[clusters[index_cluster][toBeChanged]],
                                                           dataset[clusters[index_cluster][j]])
                     v = 0.5 * (v_left + v_right)
                     D[:, toBeChanged] = v
