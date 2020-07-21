@@ -16,15 +16,14 @@ class Granulator:
         self.Symbol_Threshold = S_T
     def set_Lambda(self, L):
         self.Lambda = L
-    def Setup(self,L,S_T,Metric):
+    def Setup(self,L, S_T, obj_metric):
         self.Lambda = L
         self.Symbol_Threshold = S_T
-        self.Metric_Class = Metric # Classe Metric in metodo Setup
-        self.obj_metric = Metric(0) # Oggetto di classe Metric in metodo Setup
+        self.obj_metric = obj_metric
     
     def Process(self, dataset):  # SpareBSAS
+        
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
-    
         Input:
         - dataset: list of items to be processed
         - theta: real-valued dissimilarity threshold for pattern inclusion
@@ -40,6 +39,7 @@ class Granulator:
         - y: y coordinates of points of the clusters.
         - x_r: x coordinates of points of the clusters' representatives
         - y_r: y coordinates of points of the clusters' representatives."""
+        
         Q = self.Lambda;
         theta = self.Symbol_Threshold;
         # Set useful parameters
