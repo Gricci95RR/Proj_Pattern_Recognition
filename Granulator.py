@@ -16,10 +16,11 @@ class Granulator:
         self.Symbol_Threshold = S_T
     def set_Lambda(self, L):
         self.Lambda = L
-    def Setup(self,L, S_T, obj_metric):
+    def Setup(self,L, S_T, obj_metric, obj_representative):
         self.Lambda = L
         self.Symbol_Threshold = S_T
         self.obj_metric = obj_metric
+        self.obj_representative = obj_representative 
     
     def Process(self, dataset):  # SpareBSAS
         
@@ -60,7 +61,7 @@ class Granulator:
             point = dataset[i]
             # find distances w.r.t. all clusters
             distances = [self.obj_metric.Diss(point, medoid) for medoid in representatives]
-            index_cluster = numpy.argmin(distances)
+            index_cluster = numpy.argmin(distances) #__update
             distance = distances[index_cluster]
     
             if distance > theta and len(clusters) < Q:
@@ -147,11 +148,12 @@ class Granulator:
                 clusters_DissimMatrix[index_cluster] = D
                 representatives[index_cluster] = dataset[clusters[index_cluster][minSOD_ID]]
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
+                
         # Calcolo cardinalità
         cardinalita = []
         for i in range(0,len(clusters)):
             cardinalita.append(len(clusters[i]))
-            
+        
         # Assegno cardinalità
         # Creazione oggetto granulo
         granulo = Granule()
@@ -177,14 +179,24 @@ class Granulator:
                         x_r[i].append(representatives[i][j])         
                     else:
                         y_r[i].append(representatives[i][j])
+                        
+        
         # estraggo coordinate x e y dei clusters
+        x = []
+        y = []
         for i in range(0,len(clusters_v)):
+            x.append([])
+            y.append([])
             for j in range(1,len(clusters_v[i])):
                 for k in range(0,2):
                     if k == 0:
                         x[i].append(clusters_v[i][j][k])         
                     else:
                         y[i].append(clusters_v[i][j][k])
+                        
+        
+        # calcolo coordinate centroidi
+        x_r_c, y_r_c, representatives_c = self.obj_representative.Update(x,y, representatives)
         
         #plot
         fig, ax = plt.subplots(1,figsize=(7,5))
@@ -194,6 +206,7 @@ class Granulator:
         for i in range(0,len(cardinalita)):
             plt.scatter(x[i], y[i], s = 100)
             plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')
+            plt.scatter(x_r_c[i], y_r_c[i], marker='*' ,s = 100,c = 'red') #__plot centroidi
         
         # Calcolo distanze dei punti dei clusters dai loro rappresentanti
         distanze = []
@@ -231,6 +244,8 @@ class Granulator:
             quality.append(avg2)
         # Set Quality
         granulo.set_Quality(quality)
+        
+        
         
         print("Cardinalità")
         print(cardinalita)
