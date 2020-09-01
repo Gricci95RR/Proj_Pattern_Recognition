@@ -61,7 +61,7 @@ class Granulator:
             point = dataset[i]
             # find distances w.r.t. all clusters
             distances = [self.obj_metric.Diss(point, medoid) for medoid in representatives]
-            index_cluster = numpy.argmin(distances) 
+            index_cluster = numpy.argmin(distances) #__update
             distance = distances[index_cluster]
     
             if distance > theta and len(clusters) < Q:
@@ -88,14 +88,45 @@ class Granulator:
                 if len(clusters[index_cluster]) < poolSize:
                     clusters[index_cluster].append(i)
                     clusters_v[index_cluster].append(point)
-                    minSOD_ID, D = self.obj_representative.Update_M(clusters,index_cluster,clusters_DissimMatrix,dataset,self.obj_metric)
-                    if i>15:
-                        x_r_c, y_r_c, representatives,  = self.obj_representative.Update(clusters_v, representatives) # update centroidi
-        
+                    D = numpy.zeros((len(clusters[index_cluster]), len(clusters[index_cluster])))
+                    D[:-1, :-1] = clusters_DissimMatrix[index_cluster]
+    
+                    v_left, v_right = [], []
+                    for j, k in itertools.product([D.shape[1] - 1], range(D.shape[0] - 1)):
+                        v_left.append(
+                            self.obj_metric.Diss(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                    for j, k in itertools.product(range(D.shape[1] - 1), [D.shape[0] - 1]):
+                        v_right.append(
+                            self.obj_metric.Diss(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                    v = 0.5 * (numpy.array(v_left) + numpy.array(v_right))
+                    D[0:-1, -1] = v
+                    D[-1, 0:-1] = v
+                    minSOD_ID = numpy.argmin(numpy.sum(D, axis=1))
                 else:
                     id_pattern1, id_pattern2 = random.sample(range(0, poolSize), 2)
                     id_medoid = clusters[index_cluster].index(representatives_IDs[index_cluster])
-                    
+                    # old_D = clusters_DissimMatrix[index_cluster]
+                    # d1 = old_D[id_medoid, id_pattern1]
+                    # d2 = old_D[id_medoid, id_pattern2]
+                    # if d1 >= d2:
+                    #     old_D = numpy.delete(old_D, (id_pattern1), axis=0)
+                    #     old_D = numpy.delete(old_D, (id_pattern1), axis=1)
+                    #     del clusters[index_cluster][id_pattern1]
+                    # else:
+                    #     old_D = numpy.delete(old_D, (id_pattern2), axis=0)
+                    #     old_D = numpy.delete(old_D, (id_pattern2), axis=1)
+                    #     del clusters[index_cluster][id_pattern2]
+                    # clusters[index_cluster].append(i)
+                    # D = numpy.zeros((len(clusters[index_cluster]), len(clusters[index_cluster])))
+                    # D[:-1, :-1] = old_D
+                    # v_left, v_right = [], []
+                    # for j, k in itertools.product([D.shape[1] - 1], range(D.shape[0] - 1)):
+                    #     v_left.append(dissimilarityFunction(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                    # for j, k in itertools.product(range(D.shape[1] - 1), [D.shape[0] - 1]):
+                    #     v_right.append(dissimilarityFunction(dataset[clusters[index_cluster][j]], dataset[clusters[index_cluster][k]]))
+                    # v = 0.5 * (numpy.array(v_left) + numpy.array(v_right))
+                    # D[0:-1, -1] = v
+                    # D[-1, 0:-1] = v
                     D = clusters_DissimMatrix[index_cluster]
                     d1 = D[id_medoid, id_pattern1]
                     d2 = D[id_medoid, id_pattern2]
@@ -165,7 +196,7 @@ class Granulator:
                         
         
         # calcolo coordinate centroidi
-        #x_r_c, y_r_c, representatives_c = self.obj_representative.Update(clusters_v, representatives)
+        x_r_c, y_r_c, representatives_c = self.obj_representative.Update(x,y, representatives)
         
         #plot
         fig, ax = plt.subplots(1,figsize=(7,5))
