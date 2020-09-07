@@ -89,9 +89,7 @@ class Granulator:
                     clusters[index_cluster].append(i)
                     clusters_v[index_cluster].append(point)
                     minSOD_ID, D = self.obj_representative.Update_M(clusters,index_cluster,clusters_DissimMatrix,dataset,self.obj_metric)
-                    if i>15:
-                        x_r_c, y_r_c, representatives,  = self.obj_representative.Update(clusters_v, representatives) # update centroidi
-        
+            
                 else:
                     id_pattern1, id_pattern2 = random.sample(range(0, poolSize), 2)
                     id_medoid = clusters[index_cluster].index(representatives_IDs[index_cluster])
@@ -164,8 +162,6 @@ class Granulator:
                         y[i].append(clusters_v[i][j][k])
                         
         
-        # calcolo coordinate centroidi
-        #x_r_c, y_r_c, representatives_c = self.obj_representative.Update(clusters_v, representatives)
         
         #plot
         fig, ax = plt.subplots(1,figsize=(7,5))
@@ -175,7 +171,7 @@ class Granulator:
         for i in range(0,len(cardinalita)):
             plt.scatter(x[i], y[i], s = 100)
             plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')
-            plt.scatter(x_r_c[i], y_r_c[i], marker='*' ,s = 100,c = 'red') #__plot centroidi
+            #plt.scatter(x_r_c[i], y_r_c[i], marker='*' ,s = 100,c = 'red') #__plot centroidi
         
         # Calcolo distanze dei punti dei clusters dai loro rappresentanti
         distanze = []
