@@ -2,7 +2,7 @@ class Agent:
     #Symbol_Threshold 
     #Labda max num of clusters
       
-    def __init__(self, Granulator, Metric, external_extractor, Representative):
+    def __init__(self, Granulator, Metric, external_extractor, Representative, Clustering_BSAS):
         self.AgentGranulator = Granulator()
         self.AgentExtractor = external_extractor
         self.Metric_Class = Metric # Classe Metric 
@@ -11,13 +11,15 @@ class Agent:
         self.obj_representative  = Representative() # Oggetto di classe Metric 
         self.Symbol_Threshold = 0;
         self.Lambda = 0; 
+        self.Clustering_BSAS_Class = Clustering_BSAS
+        self.obj_clustering_bsas = Clustering_BSAS()
         
     def execute(self, theta, Q):
         self.Symbol_Threshold = theta;
         self.Lambda = Q; 
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator.Setup(self.Lambda, self.Symbol_Threshold, self.obj_metric, self.obj_representative)
-        self.AgentGranulator.Process(sample)
+        self.AgentGranulator.Setup(self.Lambda, self.Symbol_Threshold, self.obj_metric, self.obj_representative,self.obj_clustering_bsas)
+        self.AgentGranulator.Process(sample,self.obj_clustering_bsas)
                        
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold
