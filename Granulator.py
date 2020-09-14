@@ -23,7 +23,7 @@ class Granulator:
         self.obj_representative = obj_representative 
         self.obj_clustering_bsas = obj_clustering_bsas
     
-    def Process(self, dataset, obj_clustering_bsas):  # SpareBSAS
-        self.obj_clustering_bsas.clustering_bsas(dataset,self.Lambda,self.Symbol_Threshold,self.obj_metric,self.obj_representative)
+    def Process(self, dataset):  # SpareBSAS
+        self.obj_clustering_bsas.clustering_bsas(dataset,self.Lambda,self.Symbol_Threshold,self.obj_metric,self.obj_representative,self.obj_clustering_bsas)
    
 

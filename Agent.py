@@ -19,7 +19,7 @@ class Agent:
         self.Lambda = Q; 
         sample = self.AgentExtractor.Extract('iris_data.txt')
         self.AgentGranulator.Setup(self.Lambda, self.Symbol_Threshold, self.obj_metric, self.obj_representative,self.obj_clustering_bsas)
-        self.AgentGranulator.Process(sample,self.obj_clustering_bsas)
+        self.AgentGranulator.Process(sample)
                        
     def get_Symbol_Threshold(self):
         return self.Symbol_Threshold

@@ -8,7 +8,7 @@ from statistics import mean
 
 class Clustering_BSAS:
     lista_di_granuli = [];
-    def clustering_bsas(self, dataset,Lambda,Symbol_Threshold,obj_metric,obj_representative):
+    def clustering_bsas(self, dataset,Lambda,Symbol_Threshold,obj_metric,obj_representative,obj_clustering_bsas):
           
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
