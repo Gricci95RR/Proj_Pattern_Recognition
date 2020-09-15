@@ -3,9 +3,8 @@ import random
 from statistics import mean
 
 class Clustering: # SpareBSAS
-    lista_di_granuli = [];
-    
     def clustering_bsas(self, dataset, Lambda, Theta, obj_metric, obj_representative):
+        
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
         - dataset: list of items to be processed
@@ -99,3 +98,5 @@ class Clustering: # SpareBSAS
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
                 
         return clusters, representatives, clusters_v  # , representatives_IDs, clusters_DissimMatrix 
+    
+    

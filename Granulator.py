@@ -88,6 +88,9 @@ class Granulator:
         print("Quality")
         print(quality)
         
+        return clusters, representatives, clusters_v
+
+        
 def Plot(representatives,cardinalita,clusters_v):
     # divido clusters values e representatives in due vettori e divido lista clusters_v e representatives in nested list
     x = []

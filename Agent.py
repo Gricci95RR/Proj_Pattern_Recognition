@@ -18,7 +18,7 @@ class Agent:
         self.Lambda = Q; 
         self.Symbol_Threshold = S_T;
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator.Setup(self.Lambda, self.Theta, self.Symbol_Threshold,self.obj_metric, self.obj_representative,self.obj_clustering)
+        self.AgentGranulator.Setup(self.Lambda, self.Theta, self.Symbol_Threshold,self.obj_metric, self.obj_representative, self.obj_clustering)
         self.AgentGranulator.Process(sample)
                        
     def get_Theta(self):
