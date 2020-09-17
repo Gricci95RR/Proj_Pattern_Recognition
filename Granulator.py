@@ -22,7 +22,7 @@ class Granulator:
     
     def Process(self, dataset):
         
-        clusters, representatives, clusters_v = self.obj_clustering.clustering_bsas(dataset,self.Lambda, self.Theta, self.obj_metric, self.obj_representative)
+        clusters, representatives, clusters_v = self.obj_clustering.clustering(dataset,self.Lambda, self.Theta, self.obj_metric, self.obj_representative)
         
         # Calcolo cardinalità
         cardinalita = []
@@ -87,8 +87,9 @@ class Granulator:
         print(effective_Radius)
         print("Quality")
         print(quality)
-        
-        return clusters, representatives, clusters_v
+        print("Granuli")
+        print(self.lista_di_granuli)
+        return clusters, representatives, clusters_v, self.lista_di_granuli
 
         
 def Plot(representatives,cardinalita,clusters_v):

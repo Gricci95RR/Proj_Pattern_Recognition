@@ -2,8 +2,8 @@ import numpy
 import random
 from statistics import mean
 
-class Clustering: # SpareBSAS
-    def clustering_bsas(self, dataset, Lambda, Theta, obj_metric, obj_representative):
+class Clustering_MBSAS: # SpareBSAS
+    def clustering(self, dataset, Lambda, Theta, obj_metric, obj_representative):
         
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
