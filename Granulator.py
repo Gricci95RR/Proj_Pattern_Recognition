@@ -14,7 +14,7 @@ class Granulator:
         self.obj_clustering.setup_clustering(L,theta,S_T)
         
     @dispatch(int,object,object,object)  
-    def Setup(self,n_c, obj_metric, obj_representative,obj_clustering):
+    def Setup(self, n_c, obj_metric, obj_representative,obj_clustering):
         self.obj_metric = obj_metric
         self.obj_representative = obj_representative 
         self.obj_clustering = obj_clustering

@@ -26,7 +26,7 @@ class Agent:
         self.AgentGranulator.Process(sample)
     
     @dispatch(int,float)     
-    def execute(self, n_c,S_T):
+    def execute(self, n_c, S_T):
         self.n_c=n_c
         self.Symbol_Threshold = S_T;
         self.obj_clustering = self.Clustering()
