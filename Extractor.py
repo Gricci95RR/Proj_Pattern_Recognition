@@ -9,4 +9,4 @@ class Extractor:
         data=data.sample(frac=0.5) #frac = fraction of rows to return in the random sample
         data=data.iloc[:, 1:3]
         sample = data.values.tolist()
-        return sample
+        return sample # sample = list

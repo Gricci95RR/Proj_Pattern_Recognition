@@ -3,7 +3,12 @@ from scipy.sparse import coo_matrix, dok_matrix
 import itertools
 
 class Clustering_BSAS: # SpareBSAS
-    def clustering(self, dataset, Lambda, Theta, obj_metric, obj_representative):
+    def setup_clustering(self, Lambda, Theta, S_T):
+        self.Lambda = Lambda
+        self.Theta = Theta
+        self.Symbol_Th = S_T
+        
+    def clustering(self, dataset, obj_metric, obj_representative):
         
         """ BSAS with exact medoid update.
 
@@ -19,8 +24,8 @@ class Clustering_BSAS: # SpareBSAS
         - clusters_DissimMatrix: list of clusters' dissimilarity matrices. """
     
         medoidUpdate = 'fullEfficientSingle'       # options are: 'full'/'fullEfficient' (exact update, quadratic complexity)
-        Q = Lambda;
-        theta = Theta;
+        Q = self.Lambda;
+        theta = self.Theta;
         # first pattern --> first cluster
         clusters = [[0]]
         clusters_v = [[0]]
@@ -125,6 +130,6 @@ class Clustering_BSAS: # SpareBSAS
                 clusters_v.append([i])
                 representatives_IDs.append(i)
                 clusters_DissimMatrix.append(numpy.zeros((1, 1)))                                                                      # useful only if medoidUpdate == 'fullEfficientSingle'
-        return clusters, representatives,clusters_v#, representatives_IDs, clusters_DissimMatrix
+        return representatives,clusters_v#, representatives_IDs, clusters_DissimMatrix
     
     

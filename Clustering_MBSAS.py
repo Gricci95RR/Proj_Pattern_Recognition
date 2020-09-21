@@ -1,9 +1,18 @@
 import numpy
 import random
 from statistics import mean
-
+def range_inc(start, stop, step):
+    i = start
+    while i < stop:
+        yield i
+        i += step
 class Clustering_MBSAS: # SpareBSAS
-    def clustering(self, dataset, Lambda, Theta, obj_metric, obj_representative):
+    def setup_clustering(self, Lambda, Theta, S_T):
+        self.Lambda = Lambda
+        self.Theta = Theta
+        self.Symbol_Th = S_T
+        
+    def clustering(self, dataset, obj_metric, obj_representative):
         
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
@@ -22,8 +31,9 @@ class Clustering_MBSAS: # SpareBSAS
         - x_r: x coordinates of points of the clusters' representatives
         - y_r: y coordinates of points of the clusters' representatives."""
         
-        Q = Lambda;
-        theta = Theta;
+        Q = self.Lambda;
+        theta = self.Theta;
+        
         # Set useful parameters
         poolSize = 20
     
@@ -97,6 +107,6 @@ class Clustering_MBSAS: # SpareBSAS
                 representatives[index_cluster] = dataset[clusters[index_cluster][minSOD_ID]]
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
                 
-        return clusters, representatives, clusters_v  # , representatives_IDs, clusters_DissimMatrix 
-    
-    
+        return representatives, clusters_v  # , representatives_IDs, clusters_DissimMatrix, clusters, 
+            
+        

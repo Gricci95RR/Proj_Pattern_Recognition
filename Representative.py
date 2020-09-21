@@ -1,5 +1,5 @@
 from statistics import mean
-import numpy
+import numpy 
 import itertools
 
 class Representative:
@@ -20,35 +20,7 @@ class Representative:
                     D[-1, 0:-1] = v
                     minSOD_ID = numpy.argmin(numpy.sum(D, axis=1))
                     return minSOD_ID, D
-       
-    '''
-    def Update(self,clusters_v,representatives):
-            # estraggo coordinate x e y dei clusters
-            x = []
-            y = []
-            for i in range(0,len(clusters_v)):
-                x.append([])
-                y.append([])
-                for j in range(1,len(clusters_v[i])):
-                    for k in range(0,2):
-                        if k == 0:
-                            x[i].append(clusters_v[i][j][k])         
-                        else:
-                            y[i].append(clusters_v[i][j][k])
-            # __calcolo centroidi
-            x_r_c=[]
-            y_r_c=[]
-            for i in range(0,len(x)):
-                x_r_c.append([])
-                y_r_c.append([])
-                x_r_c[i]=mean(x[i])
-                y_r_c[i]=mean(y[i])
-            for i in range(0,len(x_r_c)):
-                representatives[i][0]=x_r_c[i]
-            for i in range(0,len(y_r_c)):
-                representatives[i][1]=x_r_c[i] 
-                
-                return x_r_c, y_r_c, representatives
     
-    '''   
-
+    def update_c(self,classes,classification):
+        return numpy.average(classes[classification], axis = 0)
+    

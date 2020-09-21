@@ -1,33 +1,34 @@
 from Granule import Granule
 import matplotlib.pyplot as plt
 from statistics import mean
+from multipledispatch import dispatch 
 
 class Granulator:
     lista_di_granuli = [];
-    def get_Theta(self):
-        return self.Theta
-    def get_Lambda(self):
-        return self.Lambda
-    def set_Symbol_Threshold(self,theta):
-        self.Theta = theta
-    def set_Lambda(self, L):
-        self.Lambda = L
-    def Setup(self, L, theta, S_T, obj_metric, obj_representative,obj_clustering):
-        self.Lambda = L
-        self.Theta = theta
-        self.Symbol_Threshold = S_T
+    
+    @dispatch(float,int,float,object,object,object)  
+    def Setup(self, theta, L, S_T, obj_metric, obj_representative,obj_clustering):
         self.obj_metric = obj_metric
         self.obj_representative = obj_representative 
         self.obj_clustering = obj_clustering
+        self.obj_clustering.setup_clustering(L,theta,S_T)
+        
+    @dispatch(int,object,object,object)  
+    def Setup(self,n_c, obj_metric, obj_representative,obj_clustering):
+        self.obj_metric = obj_metric
+        self.obj_representative = obj_representative 
+        self.obj_clustering = obj_clustering
+        self.obj_clustering.setup_clustering(n_c)
     
     def Process(self, dataset):
         
-        clusters, representatives, clusters_v = self.obj_clustering.clustering(dataset,self.Lambda, self.Theta, self.obj_metric, self.obj_representative)
+        representatives, clusters_v = self.obj_clustering.clustering(dataset, self.obj_metric, self.obj_representative)
+        
         
         # Calcolo cardinalità
         cardinalita = []
-        for i in range(0,len(clusters)):
-            cardinalita.append(len(clusters[i]))
+        for i in range(0,len(clusters_v)):
+            cardinalita.append(len(clusters_v[i]))
         
         # Assegno cardinalità
         # Creazione oggetto granulo
@@ -89,8 +90,11 @@ class Granulator:
         print(quality)
         print("Granuli")
         print(self.lista_di_granuli)
-        return clusters, representatives, clusters_v, self.lista_di_granuli
-
+        print("Clusters_v")
+        print(clusters_v)
+        
+        return representatives, clusters_v, self.lista_di_granuli
+        
         
 def Plot(representatives,cardinalita,clusters_v):
     # divido clusters values e representatives in due vettori e divido lista clusters_v e representatives in nested list
@@ -131,7 +135,6 @@ def Plot(representatives,cardinalita,clusters_v):
     for i in range(0,len(cardinalita)):
         plt.scatter(x[i], y[i], s = 100)
         plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')
-        #plt.scatter(x_r_c[i], y_r_c[i], marker='*' ,s = 100,c = 'red') #__plot centroidi
         
         
    
