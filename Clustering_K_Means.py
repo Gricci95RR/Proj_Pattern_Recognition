@@ -68,26 +68,4 @@ class Clustering_K_Means:
         
         return centroidi, clusters_v 
     
-    def evaluate(k_max,data,obj_metric, obj_representative):
-        sse = []
-        for k in range(1, k_max+1):
-            clf = Clustering_K_Means(k)
-            clf.fit(data,obj_metric,obj_representative)
-            centroids, points = clf.clustering(data,obj_metric, obj_representative) 
-                
-            curr_sse = 0
-                
-            # calculate square of Euclidean distance of each point from its cluster center and add to current WSS
-            for i in range(len(points)):
-                for j in range(0,len(points[i])):
-                    curr_center = centroids[i]
-                    curr_sse += (points[i][j][0] - curr_center[0]) ** 2 + (points[i][j][1] - curr_center[1]) ** 2
-            sse.append(curr_sse)
-            
-        fig = plt.figure()
-        ax = plt.axes()
-        x = np.arange(0, len(sse),1)
-        ax.plot(x, sse);
-        ax.set_xlabel('K')
-        ax.set_ylabel('Within-Cluster-Sum of Squared Errors')
-        ax.set_title('Elbow Method')    
+       
