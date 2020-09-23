@@ -64,3 +64,16 @@ class Agent:
         ax.set_xlabel('K')
         ax.set_ylabel('Within-Cluster-Sum of Squared Errors')
         ax.set_title('Elbow Method') 
+    
+    @dispatch(float,float)     
+    def evaluate(self,theta_step,theta_stop):
+        thetas = np.arange(0,theta_stop,theta_step)
+        thetas2 = []
+        for theta in thetas:
+            self.obj_clustering = self.Clustering()
+            sample = self.AgentExtractor.Extract('iris_data.txt')
+            self.AgentGranulator.Setup(theta,self.Lambda, self.Symbol_Threshold, self.obj_metric, self.obj_representative, self.obj_clustering)
+            representatives, points, lista_di_granuli = self.AgentGranulator.Process(sample) 
+            if len(representatives) != self.Lambda:
+                thetas2.append(theta)
+        print('Lista di Theta',thetas2)

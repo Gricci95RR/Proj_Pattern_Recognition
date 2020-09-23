@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class Clustering_K_Means:
-    def __init__(self ,k = 8, max_iter = 100 ):
+    def __init__(self ,k = 0, max_iter = 100 ):
         self.k = k
         self.max_iter = max_iter
-        print("Initalized k with :",k)
+        print("Initalized k")
         
     def setup_clustering(self, n_c):
         self.k = n_c # numero di cluster

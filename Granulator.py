@@ -78,6 +78,7 @@ class Granulator:
         
         Plot(representatives,cardinalita,clusters_v)
         
+        '''
         print("Cardinalità")
         print(cardinalita)
         print("Distances")
@@ -88,10 +89,12 @@ class Granulator:
         print(effective_Radius)
         print("Quality")
         print(quality)
-        print("Granuli")
-        print(self.lista_di_granuli)
         print("Clusters_v")
         print(clusters_v)
+        '''
+        print("Granuli")
+        print(self.lista_di_granuli)
+        
         
         return representatives, clusters_v, self.lista_di_granuli
         
