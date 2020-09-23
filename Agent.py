@@ -1,22 +1,19 @@
 from multipledispatch import dispatch 
 import matplotlib.pyplot as plt
-import seaborn as sb
-from sklearn.cluster import KMeans
 import numpy as np
 
 class Agent:
       
     def __init__(self, Granulator, Metric, external_extractor, Representative, Clustering):
-        self.AgentGranulator = Granulator()
+        
         self.AgentExtractor = external_extractor
         self.Metric_Class = Metric # Classe Metric 
         self.obj_metric = Metric() # Oggetto di classe Metric 
         self.Representative_Class = Representative  # Classe Representative 
         self.obj_representative  = Representative() # Oggetto di classe Metric 
-        self.Theta = 0;
-        self.Lambda = 0; 
-        self.Symbol_Threshold = 0;
-        self.Clustering = Clustering
+        self.Clustering = Clustering # Classe Clustering
+        self.obj_clustering = self.Clustering() # Oggetto di classe Clustering
+        self.Granulator_Class = Granulator # Classe Granulator
         
         
     @dispatch(float,int,float)     
@@ -24,20 +21,22 @@ class Agent:
         self.Theta = theta;
         self.Lambda = Q; 
         self.Symbol_Threshold = S_T;
-        self.obj_clustering = self.Clustering()
+        self.obj_clustering.setup_clustering(Q,theta,S_T)
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator.Setup(self.Theta,self.Lambda, self.Symbol_Threshold, self.obj_metric, self.obj_representative, self.obj_clustering)
+        self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering) #Oggetto di classe Granulator
         self.AgentGranulator.Process(sample)
+        
     
     @dispatch(int,float)     
     def execute(self, n_c, S_T):
         self.n_c=n_c
         self.Symbol_Threshold = S_T;
         self.obj_clustering = self.Clustering()
+        self.obj_clustering.setup_clustering(n_c)
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator.Setup(self.n_c, self.obj_metric, self.obj_representative, self.obj_clustering)
+        self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering) #Oggetto di classe Granulator
         self.AgentGranulator.Process(sample)
-     
+'''
     @dispatch(int) 
     def evaluate(self,k_max):
         sse = []
@@ -77,3 +76,4 @@ class Agent:
             if len(representatives) != self.Lambda:
                 thetas2.append(theta)
         print('Lista di Theta',thetas2)
+'''

@@ -11,7 +11,7 @@ class Clustering_K_Means:
     def setup_clustering(self, n_c):
         self.k = n_c # numero di cluster
     
-    def fit(self, data,obj_metric, obj_representative):
+    def fit(self, data, obj_metric, obj_representative):
         self.centroids = []
         #initialize the centroids, the first 'k' elements in the dataset will be our initial centroids
         for i in range(self.k):
@@ -23,7 +23,6 @@ class Clustering_K_Means:
             for cluster in range(self.k):
                 self.classes[cluster] = []
                 
-    
             #find the distance between the point and cluster; choose the nearest centroid
             for point in range(len(data)):
                 distances = obj_metric.Diss2(self.centroids, data.iloc[point].to_numpy())
@@ -42,7 +41,7 @@ class Clustering_K_Means:
             if np.sum((curr - previous)/previous * 100.0) > 0.0001:
                 optimal = False
                 
-    def clustering(self,data,obj_metric, obj_representative):
+    def clustering(self, data, obj_metric, obj_representative):
         clf = Clustering_K_Means(self.k)
         data = pd.DataFrame(data)
         clf.fit(data,obj_metric,obj_representative)
@@ -64,7 +63,6 @@ class Clustering_K_Means:
             centroidi[k]=centroidi[k].tolist()
             
         print('ok')
-        
         
         return centroidi, clusters_v 
     

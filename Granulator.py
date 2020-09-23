@@ -1,29 +1,18 @@
 from Granule import Granule
 import matplotlib.pyplot as plt
 from statistics import mean
-from multipledispatch import dispatch 
 
 class Granulator:
     lista_di_granuli = [];
     
-    @dispatch(float,int,float,object,object,object)  
-    def Setup(self, theta, L, S_T, obj_metric, obj_representative,obj_clustering):
+    def __init__(self, obj_metric, obj_representative, obj_clustering):
         self.obj_metric = obj_metric
         self.obj_representative = obj_representative 
         self.obj_clustering = obj_clustering
-        self.obj_clustering.setup_clustering(L,theta,S_T)
-        
-    @dispatch(int,object,object,object)  
-    def Setup(self, n_c, obj_metric, obj_representative,obj_clustering):
-        self.obj_metric = obj_metric
-        self.obj_representative = obj_representative 
-        self.obj_clustering = obj_clustering
-        self.obj_clustering.setup_clustering(n_c)
-    
+
     def Process(self, dataset):
         
         representatives, clusters_v = self.obj_clustering.clustering(dataset, self.obj_metric, self.obj_representative)
-        
         
         # Calcolo cardinalità
         cardinalita = []

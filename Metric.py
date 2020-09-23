@@ -1,5 +1,6 @@
 from scipy.spatial import distance
 import numpy as np
+
 class Metric:
     Weight_Params = [1];
     
@@ -8,6 +9,6 @@ class Metric:
         #dst = dst * np.sqrt(self.Weight_Params)
         return dst
     
-    def Diss2(self , x1, x2):
+    def Diss2(self, x1, x2):
         return (np.sqrt(np.sum(np.square(x1 - x2) , axis = 1)))
     
