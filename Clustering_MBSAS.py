@@ -1,14 +1,16 @@
 import numpy
 import random
 from statistics import mean
+from Granulator import Granulator
 
 class Clustering_MBSAS: # SpareBSAS
-    def setup_clustering(self, Lambda, Theta, S_T):
-        self.Lambda = Lambda
+    def setup_clustering(self, Theta,Lambda, S_T,theta_stop,theta_step):
         self.Theta = Theta
+        self.Lambda = Lambda
         self.Symbol_Th = S_T
+        self.theta_stop, self.theta_step = theta_stop,theta_step
         
-    def clustering(self, dataset, obj_metric, obj_representative):
+    def fit(self, dataset, obj_metric, obj_representative, Theta):
         
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
@@ -28,7 +30,7 @@ class Clustering_MBSAS: # SpareBSAS
         - y_r: y coordinates of points of the clusters' representatives."""
         
         Q = self.Lambda;
-        theta = self.Theta;
+        theta = Theta;
         
         # Set useful parameters
         poolSize = 20
@@ -104,5 +106,28 @@ class Clustering_MBSAS: # SpareBSAS
                 representatives_IDs[index_cluster] = clusters[index_cluster][minSOD_ID]
                 
         return representatives, clusters_v  # , representatives_IDs, clusters_DissimMatrix, clusters, 
-            
+    
+    def clustering(self, dataset, obj_metric, obj_representative):
         
+        representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative,self.Theta)
+        
+        return representatives, clusters_v    
+    
+    def evaluate(self, dataset, obj_metric, obj_representative):
+        
+        thetas = numpy.arange(0,self.theta_stop,self.theta_step)
+        thetas2 = []
+        l = []
+        i = 0
+        obj_clustering=Clustering_MBSAS()
+        obj_gran=Granulator(obj_metric, obj_representative, obj_clustering)
+        for theta in thetas:
+            self.Theta = theta
+            representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative,self.Theta)
+            obj_gran.Add(representatives, clusters_v)
+            obj_gran.Plot(representatives, clusters_v)
+            l.append(len(representatives))
+            if l[i] != l[i-1]:
+                thetas2.append(theta)
+        print('Lista di Theta',thetas2)
+        return thetas2
