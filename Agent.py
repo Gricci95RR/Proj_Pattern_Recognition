@@ -16,25 +16,22 @@ class Agent:
         self.Granulator_Class = Granulator # Classe Granulator
         
         
-    @dispatch(float,int,float,float,float)     
-    def execute(self,Theta ,Q, S_T,theta_step,theta_stop):
-        self.Theta = Theta;
+    @dispatch(int,float,float,float,float)     
+    def execute(self,Q, S_T,theta_start,theta_step,theta_stop):
         self.Lambda = Q; 
         self.Symbol_Threshold = S_T;
-        self.theta_stop, self.theta_step = theta_stop,theta_step
-        self.obj_clustering.setup_clustering(Theta,Q,S_T,theta_stop,theta_step)
+        self.theta_start, self.theta_stop, self.theta_step = theta_start,theta_stop,theta_step
+        self.obj_clustering.setup_clustering(Q,theta_start,theta_stop,theta_step)
         sample = self.AgentExtractor.Extract('iris_data.txt')
         self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering) #Oggetto di classe Granulator
         self.AgentGranulator.Process(sample)
         
-    
-    @dispatch(int,int,float)     
-    def execute(self, k_max, k, S_T):
+    @dispatch(int,float)     
+    def execute(self, k_max, S_T):
         self.k_max=k_max
-        self.k=k
         self.Symbol_Threshold = S_T;
         self.obj_clustering = self.Clustering()
-        self.obj_clustering.setup_clustering(k_max,k)
+        self.obj_clustering.setup_clustering(k_max)
         sample = self.AgentExtractor.Extract('iris_data.txt')
         self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering) #Oggetto di classe Granulator
         self.AgentGranulator.Process(sample)

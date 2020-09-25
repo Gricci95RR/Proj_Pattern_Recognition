@@ -1,17 +1,16 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from Granulator import Granulator
+
 class Clustering_K_Means:
     
     def __init__(self ,k = 0, max_iter = 100 ):
         self.k = k
         self.max_iter = max_iter
-        print("Initalized k")
+        print("Initalized k",self.k)
         
-    def setup_clustering(self, k_max, k):
+    def setup_clustering(self, k_max):
         self.k_max = k_max # numero di cluster
-        self.k = k
     
     def fit(self, data, obj_metric, obj_representative):
         self.centroids = []
@@ -44,6 +43,7 @@ class Clustering_K_Means:
                 optimal = False
      
     def clustering(self, data, obj_metric, obj_representative):
+        
         clf = Clustering_K_Means(self.k)
         data = pd.DataFrame(data)
         clf.fit(data,obj_metric,obj_representative)
@@ -69,9 +69,10 @@ class Clustering_K_Means:
         return centroidi, clusters_v 
           
     def evaluate(self, data, obj_metric, obj_representative):
+        
         sse = []
         obj_clustering=Clustering_K_Means()
-        obj_gran=Granulator(obj_metric, obj_representative, obj_clustering)
+        
         for k in range(1, self.k_max+1):
             clf = Clustering_K_Means(k)
             data = pd.DataFrame(data)
@@ -95,8 +96,7 @@ class Clustering_K_Means:
                 
             print('ok')
             
-            obj_gran.Add(centroidi, clusters_v)
-            obj_gran.Plot(centroidi, clusters_v)
+            Plot(centroidi, clusters_v)
             
             curr_sse = 0
                 
@@ -105,16 +105,62 @@ class Clustering_K_Means:
                 for j in range(0,len(clusters_v[i])): #num di punti per cluster
                     curr_center = centroidi[i]
                     curr_sse += (clusters_v[i][j][0] - curr_center[0]) ** 2 + (clusters_v[i][j][1] - curr_center[1]) ** 2
+                
             sse.append(curr_sse)
         
         fig = plt.figure()
         ax = plt.axes()
-        x = np.arange(1, self.k_max+1,1)
+        x = np.arange(1, self.k_max+1, 1)
         ax.plot(x, sse);
         ax.set_xlabel('K')
         ax.set_ylabel('Within-Cluster-Sum of Squared Errors')
         ax.set_title('Elbow Method')
-             
-        return sse
+        print(sse)  
+        
+        return centroidi, clusters_v
     
        
+def Plot(representatives,clusters_v):
+        # Calcolo cardinalità
+        cardinalita = []
+        for i in range(0,len(clusters_v)):
+            cardinalita.append(len(clusters_v[i]))
+    # divido clusters values e representatives in due vettori e divido lista clusters_v e representatives in nested list
+        x = []
+        y = []
+        x_r = []
+        y_r = []
+        for i in range(0,len(cardinalita)):
+            x.append([])
+            y.append([])
+            x_r.append([])
+            y_r.append([])
+        # estraggo coordinate x e y dei representatives
+        for i in range(0,len(representatives)):
+            for j in range(0,len(representatives[i])):
+                if j == 0:
+                    x_r[i].append(representatives[i][j])         
+                else:
+                    y_r[i].append(representatives[i][j])
+                            
+            
+        # estraggo coordinate x e y dei clusters
+        x = []
+        y = []
+        for i in range(0,len(clusters_v)):
+            x.append([])
+            y.append([])
+            for j in range(1,len(clusters_v[i])):
+                for k in range(0,2):
+                    if k == 0:
+                        x[i].append(clusters_v[i][j][k])         
+                    else:
+                        y[i].append(clusters_v[i][j][k])
+        #plot
+        fig, ax = plt.subplots(1,figsize=(7,5))
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.title('K-Means')
+        for i in range(0,len(cardinalita)):
+            plt.scatter(x[i], y[i], s = 100)
+            plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')

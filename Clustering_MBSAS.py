@@ -1,14 +1,12 @@
 import numpy
 import random
 from statistics import mean
-from Granulator import Granulator
+import matplotlib.pyplot as plt
 
 class Clustering_MBSAS: # SpareBSAS
-    def setup_clustering(self, Theta,Lambda, S_T,theta_stop,theta_step):
-        self.Theta = Theta
+    def setup_clustering(self, Lambda, theta_start,theta_stop, theta_step):
         self.Lambda = Lambda
-        self.Symbol_Th = S_T
-        self.theta_stop, self.theta_step = theta_stop,theta_step
+        self.theta_start, self.theta_stop, self.theta_step = theta_start, theta_stop,theta_step
         
     def fit(self, dataset, obj_metric, obj_representative, Theta):
         
@@ -115,19 +113,65 @@ class Clustering_MBSAS: # SpareBSAS
     
     def evaluate(self, dataset, obj_metric, obj_representative):
         
-        thetas = numpy.arange(0,self.theta_stop,self.theta_step)
+        thetas = numpy.arange(self.theta_start, self.theta_stop, self.theta_step)
         thetas2 = []
         l = []
         i = 0
         obj_clustering=Clustering_MBSAS()
-        obj_gran=Granulator(obj_metric, obj_representative, obj_clustering)
+       
         for theta in thetas:
             self.Theta = theta
             representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative,self.Theta)
-            obj_gran.Add(representatives, clusters_v)
-            obj_gran.Plot(representatives, clusters_v)
+            Plot(representatives, clusters_v)
             l.append(len(representatives))
-            if l[i] != l[i-1]:
+            if l[i] == l[i-1]:
                 thetas2.append(theta)
-        print('Lista di Theta',thetas2)
-        return thetas2
+                break;
+        print('Theta',thetas2)
+        
+        return representatives, clusters_v
+
+def Plot(representatives,clusters_v):
+        # Calcolo cardinalità
+        cardinalita = []
+        for i in range(0,len(clusters_v)):
+            cardinalita.append(len(clusters_v[i]))
+    # divido clusters values e representatives in due vettori e divido lista clusters_v e representatives in nested list
+        x = []
+        y = []
+        x_r = []
+        y_r = []
+        for i in range(0,len(cardinalita)):
+            x.append([])
+            y.append([])
+            x_r.append([])
+            y_r.append([])
+        # estraggo coordinate x e y dei representatives
+        for i in range(0,len(representatives)):
+            for j in range(0,len(representatives[i])):
+                if j == 0:
+                    x_r[i].append(representatives[i][j])         
+                else:
+                    y_r[i].append(representatives[i][j])
+                            
+            
+        # estraggo coordinate x e y dei clusters
+        x = []
+        y = []
+        for i in range(0,len(clusters_v)):
+            x.append([])
+            y.append([])
+            for j in range(1,len(clusters_v[i])):
+                for k in range(0,2):
+                    if k == 0:
+                        x[i].append(clusters_v[i][j][k])         
+                    else:
+                        y[i].append(clusters_v[i][j][k])
+        #plot
+        fig, ax = plt.subplots(1,figsize=(7,5))
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.title('MBSAS')
+        for i in range(0,len(cardinalita)):
+            plt.scatter(x[i], y[i], s = 100)
+            plt.scatter(x_r[i],y_r[i], marker='*' ,s = 100,c = 'yellow')
