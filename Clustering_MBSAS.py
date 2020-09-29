@@ -4,11 +4,12 @@ from statistics import mean
 import matplotlib.pyplot as plt
 
 class Clustering_MBSAS: # SpareBSAS
-    def setup_clustering(self, Lambda, theta_start,theta_stop, theta_step):
+    def __init__(self, Lambda, theta_start,theta_step, theta_stop):
         self.Lambda = Lambda
-        self.theta_start, self.theta_stop, self.theta_step = theta_start, theta_stop,theta_step
+        self.theta_start, self.theta_step, self.theta_stop = theta_start, theta_step, theta_stop
+        print(self.theta_start, self.theta_stop, self.theta_step)
         
-    def fit(self, dataset, obj_metric, obj_representative, Theta):
+    def fit(self, dataset, obj_metric, obj_representative):
         
         """ Modified two-pass BSAS with approximate medoid tracking from the SPARE library
         Input:
@@ -28,7 +29,7 @@ class Clustering_MBSAS: # SpareBSAS
         - y_r: y coordinates of points of the clusters' representatives."""
         
         Q = self.Lambda;
-        theta = Theta;
+        theta = self.Theta;
         
         # Set useful parameters
         poolSize = 20
@@ -107,29 +108,34 @@ class Clustering_MBSAS: # SpareBSAS
     
     def clustering(self, dataset, obj_metric, obj_representative):
         
-        representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative,self.Theta)
+        representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative)
         
         return representatives, clusters_v    
     
     def evaluate(self, dataset, obj_metric, obj_representative):
-        
+        start = self.theta_start
+        stop = self.theta_stop
+        step = self.theta_step
         thetas = numpy.arange(self.theta_start, self.theta_stop, self.theta_step)
         thetas2 = []
         l = []
         i = 0
-        obj_clustering=Clustering_MBSAS()
-       
+        print('thetas',thetas)
+        
         for theta in thetas:
             self.Theta = theta
-            representatives, clusters_v = self.fit(dataset, obj_metric, obj_representative,self.Theta)
-            Plot(representatives, clusters_v)
-            l.append(len(representatives))
+            representatives1, clusters_v1 = self.fit(dataset, obj_metric, obj_representative)
+            Plot(representatives1, clusters_v1)
+            l.append(len(representatives1))
+            
             if l[i] == l[i-1]:
                 thetas2.append(theta)
+                i=i+1
                 break;
+            
         print('Theta',thetas2)
         
-        return representatives, clusters_v
+        return representatives1, clusters_v1
 
 def Plot(representatives,clusters_v):
         # Calcolo cardinalità

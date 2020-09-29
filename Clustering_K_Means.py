@@ -4,14 +4,12 @@ import matplotlib.pyplot as plt
 
 class Clustering_K_Means:
     
-    def __init__(self ,k = 0, max_iter = 100 ):
+    def __init__(self,k ,k_max):
         self.k = k
-        self.max_iter = max_iter
+        self.max_iter = 100
+        self.k_max = k_max # numero di cluster
         print("Initalized k",self.k)
         
-    def setup_clustering(self, k_max):
-        self.k_max = k_max # numero di cluster
-    
     def fit(self, data, obj_metric, obj_representative):
         self.centroids = []
         #initialize the centroids, the first 'k' elements in the dataset will be our initial centroids
@@ -71,10 +69,9 @@ class Clustering_K_Means:
     def evaluate(self, data, obj_metric, obj_representative):
         
         sse = []
-        obj_clustering=Clustering_K_Means()
         
         for k in range(1, self.k_max+1):
-            clf = Clustering_K_Means(k)
+            clf = Clustering_K_Means(k, self.k_max)
             data = pd.DataFrame(data)
             clf.fit(data,obj_metric,obj_representative)
             centroidi = clf.centroids
@@ -115,7 +112,8 @@ class Clustering_K_Means:
         ax.set_xlabel('K')
         ax.set_ylabel('Within-Cluster-Sum of Squared Errors')
         ax.set_title('Elbow Method')
-        print(sse)  
+        
+        print('sse',sse)  
         
         return centroidi, clusters_v
     
