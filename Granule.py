@@ -12,11 +12,6 @@ class Granule:
     def set_Quality(self, Quality):
         self.Quality = Quality
     
-    def set_Representative(self, Representative):
-        self.Representative = Representative
-    
-    def set_Metric(self, Metric):
-        self.Metric = Metric
         
         
 

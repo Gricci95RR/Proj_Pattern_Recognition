@@ -5,11 +5,12 @@ from statistics import mean
 class Granulator:
     lista_di_granuli = [];
     
-    def __init__(self, obj_metric, obj_representative, obj_clustering, S_T):
+    def __init__(self, obj_metric, obj_representative, obj_clustering, S_T,eta):
         self.obj_metric = obj_metric
         self.obj_representative = obj_representative 
         self.obj_clustering = obj_clustering
         self.S_T = S_T
+        self.eta = eta
 
     def Process(self, dataset):
         
@@ -52,7 +53,7 @@ class Granulator:
         # Calcolo Quality (valor medio di compattezza e cardinalità)
         quality = []
         for i in range(0, len(cardinalita)):
-            avg2 = (compattezza[i]+cardinalita[i])/2 
+            avg2 = (compattezza[i]+cardinalita[i])*self.eta
             quality.append(avg2)
         
         

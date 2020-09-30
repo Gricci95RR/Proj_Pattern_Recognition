@@ -14,10 +14,11 @@ class Agent:
         self.obj_clustering = obj_clustering # Oggetto di classe Clustering
         self.Granulator_Class = Granulator # Classe Granulator
         
-    def execute(self,S_T):
+    def execute(self,S_T,eta):
         self.Symbol_Threshold = S_T;
+        self.eta = eta;
         sample = self.AgentExtractor.Extract('iris_data.txt')
-        self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering, self.Symbol_Threshold) #Oggetto di classe Granulator
+        self.AgentGranulator = self.Granulator_Class(self.obj_metric, self.obj_representative, self.obj_clustering, self.Symbol_Threshold, self.eta) #Oggetto di classe Granulator
         self.AgentGranulator.Process(sample)
         
 '''     
